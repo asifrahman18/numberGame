@@ -17,26 +17,40 @@ class _GameActionState extends State<GameAction> {
   int _score1 = 0;
   int _tempScore = 0;
   int _activePlayer = 1;
-  Widget _playerTitle = Container(
-    decoration: BoxDecoration(border: Border.all()),
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-    color: Color(Colors.amber.value),
-    child: const Text('Player 1'),
-  );
-  Widget _playerTitle1 = const Text('Player 2');
+
+  @override
+  void initState() {
+    super.initState();
+    _updatePlayerTitles();
+  }
+
+  Widget _getPlayerTitle(int playerNumber) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(),
+        color: playerNumber == _activePlayer
+            ? Color(const Color.fromARGB(255, 32, 7, 255).value)
+            : Colors.transparent,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: Text(
+        'Player $playerNumber',
+        style: const TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  void _updatePlayerTitles() {
+    setState(() {});
+  }
 
   void _rollHandler() {
     setState(() {
       _num = _gameLogic.rollDice();
       if (_gameLogic.isMultipleOfFive(_num)) {
         _tempScore = 0;
-        if (_activePlayer == 1) {
-          _activePlayer = 2;
-          _updatePlayerTitles();
-        } else {
-          _activePlayer = 1;
-          _updatePlayerTitles();
-        }
+        _activePlayer = _activePlayer == 1 ? 2 : 1;
+        _updatePlayerTitles();
       } else {
         _tempScore += _num;
       }
@@ -70,41 +84,7 @@ class _GameActionState extends State<GameAction> {
       _score1 = 0;
       _tempScore = 0;
       _num = 0;
-      _playerTitle = Container(
-        decoration: BoxDecoration(
-          border: Border.all(),
-          color: Color(Colors.amber.value),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        child: const Text('Player 1'),
-      );
-      _playerTitle1 = const Text('Player 2');
-    });
-  }
-
-  void _updatePlayerTitles() {
-    setState(() {
-      if (_activePlayer == 1) {
-        _playerTitle = Container(
-          decoration: BoxDecoration(
-            border: Border.all(),
-            color: Color(Colors.amber.value),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          child: const Text('Player 1'),
-        );
-        _playerTitle1 = const Text('Player 2');
-      } else {
-        _playerTitle = const Text('Player 1');
-        _playerTitle1 = Container(
-          decoration: BoxDecoration(
-            border: Border.all(),
-            color: Color(Colors.amber.value),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          child: const Text('Player 2'),
-        );
-      }
+      _updatePlayerTitles();
     });
   }
 
@@ -140,11 +120,11 @@ class _GameActionState extends State<GameAction> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _playerTitle,
+            _getPlayerTitle(1),
             const SizedBox(
               width: 50,
             ),
-            _playerTitle1,
+            _getPlayerTitle(2),
           ],
         ),
         const SizedBox(

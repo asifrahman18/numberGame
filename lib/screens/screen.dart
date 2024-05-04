@@ -37,31 +37,34 @@ class _ScreenState extends State<Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dice Game'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: _showGameRulesDialog,
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/bg.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              AppBar(
+                backgroundColor: Colors.transparent,
+                title: const Text('Number Game'),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.help_outline),
+                    onPressed: () => _showGameRulesDialog(),
+                  ),
+                ],
+                elevation: 0,
+              ),
+              const Flexible(
+                child: GameAction(),
+              ),
+            ],
           ),
         ],
-        elevation: 0,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 162, 205, 255)
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomLeft,
-          ),
-        ),
-        child: const Center(
-          child: GameAction(),
-        ),
       ),
     );
   }
